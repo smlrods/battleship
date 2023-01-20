@@ -10,9 +10,9 @@ export default function Player(name, turn) {
     }
   }
 
-  const attack = (x, y) => {
-    if(turn) {
-      turn = false;
+  const attack = function (x, y) {
+    if(this.turn) {
+      this.turn = false;
       _enemy.gameboard.receiveAttack(x, y);
       _enemy.turn = true;
     }
