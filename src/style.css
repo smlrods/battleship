@@ -35,3 +35,7 @@ body {
 .board-square.attacked {
   background-color: blue;
 }
+
+.board.finished {
+  pointer-events:none;
+}

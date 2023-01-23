@@ -7,11 +7,15 @@ const renderBoard = (player, enemy, size=10) => {
       const col = document.createElement('div');
       col.classList.add('board-square');
       col.addEventListener('click', () => {
-        if (player.turn) {
+        if (player.turn && !player.gameboard.allSunk()) {
           if (!enemy.gameboard.board[i][j].attacked) {
             player.attack(i, j);
             if (enemy.gameboard.board[i][j].ship) {
               col.classList.add('attacked');
+              if (enemy.gameboard.allSunk()) {
+                const boards = document.querySelectorAll('.board');
+                boards.forEach((el) => el.classList.add('finished'));
+              }
             } else {
               col.classList.add('missed');
             }
