@@ -1,3 +1,8 @@
+:root {
+  --gap-board: 5px;
+}
+
+
 * {
   padding: 0;
   margin: 0;
@@ -12,16 +17,19 @@ body {
 .board {
   display: flex;
   flex-direction: column;
+  background: black;
+  gap: var(--gap-board);
 }
 
 .board > div {
   display: flex;
+  gap: var(--gap-board);
 }
 
 .board-square {
   width: 50px;
   height: 50px;
-  border: 1px solid black;
+  background: white;
 }
 
 .board-square:hover {
@@ -38,4 +46,64 @@ body {
 
 .board.finished {
   pointer-events:none;
+}
+
+/* SHIPS */
+
+.shipsBoard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.shipsRow {
+  display: flex;
+  gap: 20px;
+}
+
+.ship {
+  position: relative;
+  z-index: 100;
+  background: blue;
+}
+
+.ship > div {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+}
+
+.horizontal {
+  width: max-content;
+  height: 50px;
+}
+
+.horizontal > div {
+  width: calc(50px + var(--gap-board));
+}
+
+.horizontal > div:last-child {
+  width: 50px;
+}
+
+.vertical {
+  width: 50px;
+  height: max-content;
+}
+
+
+/* Drag and Drop */
+
+.dragging {
+  opacity: 0.8;
+  display: none;
+}
+
+.drag-over {
+  background: blue;
+}
+
+#placeships {
+  display: grid;
+  grid-template-rows: 350px min-content min-content;
 }
