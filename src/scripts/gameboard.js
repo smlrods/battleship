@@ -20,14 +20,21 @@ export default function Gameboard() {
 
   const _ships = [];
 
-  const placeShip = (x, y, ship) => {
+  const placeShip = (x, y, ship, orientation=false) => {
     if (x + ship.getLength() > 9 || y + ship.getLength() > 9 && ship.getLength() > 1) return false;
 
     _ships.push(ship);
 
-    for (let i = y; i < ship.getLength() + y; i++) {
-      board[x][i].ship = ship;
-    } 
+    if (orientation) {
+      for (let i = x; i < ship.getLength() + x; i++) {
+        board[i][y].ship = ship;
+      } 
+    } else {
+      for (let i = y; i < ship.getLength() + y; i++) {
+        board[x][i].ship = ship;
+      } 
+    }
+
 
     return true;
   }
