@@ -12,9 +12,12 @@ export default function Player(name, turn) {
 
   const attack = function (x, y) {
     if(this.turn) {
-      this.turn = false;
-      _enemy.gameboard.receiveAttack(x, y);
-      _enemy.turn = true;
+      const isPossible = _enemy.gameboard.receiveAttack(x, y);
+      if (isPossible) {
+        this.turn = false;
+        _enemy.turn = true;
+      }
+      return isPossible;
     }
   }
 

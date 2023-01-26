@@ -12,6 +12,14 @@ test("Place ships", () => {
   }
 });
 
+test("Place ships - same place", () => {
+  const game = Gameboard();
+  const x = 1;
+  const y = 1;
+  expect(game.placeShip(x, y, Ship(3))).toBe(true); 
+  expect(game.placeShip(x, y, Ship(4))).toBe(false); 
+});
+
 test("Place ships - cases not possible", () => {
   const game = Gameboard();
   expect(game.placeShip(1, 9, Ship(2))).toBe(false);

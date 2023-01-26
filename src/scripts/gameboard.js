@@ -21,22 +21,43 @@ export default function Gameboard() {
   const _ships = [];
 
   const placeShip = (x, y, ship, orientation=false) => {
-    if (x + ship.getLength() > 9 || y + ship.getLength() > 9 && ship.getLength() > 1) return false;
+    if (x + ship.getLength() - 1 > 9 ||
+        y + ship.getLength() - 1 > 9)
+          return false;
 
-    _ships.push(ship);
 
     if (orientation) {
+      const squares = [];
       for (let i = x; i < ship.getLength() + x; i++) {
-        board[i][y].ship = ship;
+        squares.push(board[i][y]);
       } 
+
+      const isPossible = squares.some((square) => square.ship != null);
+      if (!isPossible) {
+        squares.forEach(square => square.ship = ship );
+
+        _ships.push(ship);
+        return true
+      }
+
     } else {
+      const squares = [];
+
       for (let i = y; i < ship.getLength() + y; i++) {
-        board[x][i].ship = ship;
+        squares.push(board[x][i]);
       } 
+
+      const isPossible = squares.some((square) => square.ship != null);
+      if (!isPossible) {
+        squares.forEach(square => square.ship = ship );
+
+        _ships.push(ship);
+        return true
+      }
     }
 
 
-    return true;
+    return false;
   }
 
   const receiveAttack = (x, y) => {
@@ -47,11 +68,14 @@ export default function Gameboard() {
       if (board[x][y].ship) {
           board[x][y].ship.hit();
       } else {
-        if(board[x][y] === null) {
+        if(board[x][y].ship === null) {
           board[x][y] = false
         } 
       }
+
+      return true;
     }
+    return false;
   }
 
   const allSunk = () => {
