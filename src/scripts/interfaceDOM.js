@@ -1,7 +1,7 @@
-import { aiAttack } from "./ai";
+import { aiAttack } from './ai';
 import crownGif from '../images/crown.gif';
 
-const renderBoard = (player, enemy, isPlayer=false, size=10) => {
+const renderBoard = (player, enemy, isPlayer = false, size = 10) => {
   const board = document.createElement('div');
   board.classList.add('board');
   for (let i = 0; i < size; i++) {
@@ -12,7 +12,6 @@ const renderBoard = (player, enemy, isPlayer=false, size=10) => {
       if (isPlayer) col.id = `${i}${j}`;
 
       if (!isPlayer) {
-
         col.addEventListener('click', () => {
           if (col.classList.contains('attacked') && enemy.gameboard.board[i][j].ship.isSunk()) {
             if (!col.classList.contains('ship-sunk')) col.classList.add('ship-sunk');
@@ -20,30 +19,28 @@ const renderBoard = (player, enemy, isPlayer=false, size=10) => {
           }
 
           if (!player.gameboard.allSunk() && enemy.gameboard.board[i][j]) {
+            if (!enemy.gameboard.board[i][j].attacked) {
+              player.attack(i, j);
 
-              if (!enemy.gameboard.board[i][j].attacked) {
-                player.attack(i, j);
-
-                if (enemy.gameboard.board[i][j].ship) {
-                  col.classList.add('attacked');
-                  if (enemy.gameboard.allSunk()) {
-                    const infos = document.getElementById('infos'); 
-                    const crownImage = new Image();
-                    crownImage.src = crownGif;
-                    document.querySelector('body').insertBefore(crownImage, infos);
-                    infos.textContent = 'Player Won';
-                    const boards = document.querySelectorAll('.board');
-                    boards.forEach((el) => el.classList.add('finished'));
-                  }
-                } else {
-                  col.classList.add('missed');
+              if (enemy.gameboard.board[i][j].ship) {
+                col.classList.add('attacked');
+                if (enemy.gameboard.allSunk()) {
+                  const infos = document.getElementById('infos');
+                  const crownImage = new Image();
+                  crownImage.src = crownGif;
+                  document.querySelector('body').insertBefore(crownImage, infos);
+                  infos.textContent = 'Player Won';
+                  const boards = document.querySelectorAll('.board');
+                  boards.forEach((el) => el.classList.add('finished'));
                 }
+              } else {
+                col.classList.add('missed');
+              }
 
-                showSunk();
+              showSunk();
 
-                aiAttack(enemy, player);
-
-              } 
+              aiAttack(enemy, player);
+            }
           }
         });
       }
@@ -55,17 +52,17 @@ const renderBoard = (player, enemy, isPlayer=false, size=10) => {
     board.appendChild(row);
   }
   return board;
-}
+};
 
 const showShadowOfShips = (board, player) => {
   const squares = board.querySelectorAll('.board-square');
 
-  squares.forEach(square => {
+  squares.forEach((square) => {
     if (player.gameboard.board[+square.id[0]][+square.id[1]].ship) {
       square.classList.add('ship-shadow');
     }
   });
-}
+};
 
 const showSunk = () => {
   const boards = document.querySelectorAll('.board');
@@ -73,7 +70,7 @@ const showSunk = () => {
 
   computerBoard.querySelectorAll('.attacked').forEach((squareAttacked) => {
     squareAttacked.click();
-  })
-}
+  });
+};
 
-export { renderBoard, showShadowOfShips }
+export { renderBoard, showShadowOfShips };

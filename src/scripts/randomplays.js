@@ -1,8 +1,8 @@
-import Ship from "./ship";
+import Ship from './ship';
 
 export default function randomplays() {
-  const x = Math.floor(Math.random() * 10); 
-  const y = Math.floor(Math.random() * 10); 
+  const x = Math.floor(Math.random() * 10);
+  const y = Math.floor(Math.random() * 10);
   const orientation = Math.random() < 0.5;
   return [x, y, orientation];
 }
@@ -11,16 +11,17 @@ const DEFAULT_SHIPS = [Ship(4), Ship(3), Ship(3), Ship(2), Ship(2), Ship(2), Shi
 
 const attackRandom = (computer, player) => {
   let isPossible = false;
-  let x, y;
+  let x; let
+    y;
   do {
     [x, y] = randomplays();
-    if(player.gameboard.board[x][y]) {
+    if (player.gameboard.board[x][y]) {
       isPossible = computer.attack(x, y);
     }
-  } while(!isPossible);
+  } while (!isPossible);
   const square = document.getElementById(`${x}${y}`);
   showAttack(square, player.gameboard.board[x][y]);
-}
+};
 
 const showAttack = (square, hit) => {
   if (hit) {
@@ -28,7 +29,7 @@ const showAttack = (square, hit) => {
   } else {
     square.classList.add('missed');
   }
-}
+};
 
 const placeRandom = (gameboard, ship) => {
   let isPossible = false;
@@ -59,7 +60,6 @@ const placeRandom = (gameboard, ship) => {
           }
         }
       }
-
     } else {
     // horizontal
     //
@@ -79,10 +79,9 @@ const placeRandom = (gameboard, ship) => {
           }
         }
       }
-
     }
 
-    let aroundPossible = around.every((square) => square.ship === null)
+    const aroundPossible = around.every((square) => square.ship === null);
 
     if (aroundPossible) {
       isPossible = gameboard.placeShip(x, y, ship, orientation);
@@ -91,12 +90,13 @@ const placeRandom = (gameboard, ship) => {
     }
 
     around = [];
-
   } while (!isPossible);
-}
+};
 
 const placeAllShipsRandom = (ships, gameboard) => {
   ships.forEach((ship) => placeRandom(gameboard, ship));
-}
+};
 
-export { attackRandom, placeAllShipsRandom, showAttack, DEFAULT_SHIPS}
+export {
+  attackRandom, placeAllShipsRandom, showAttack, DEFAULT_SHIPS,
+};

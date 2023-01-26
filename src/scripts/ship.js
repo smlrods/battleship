@@ -1,6 +1,5 @@
 export default function Ship(length) {
-
-  let _length = length;
+  const _length = length;
   let _timesHit = 0;
 
   const hit = () => {
@@ -10,17 +9,13 @@ export default function Ship(length) {
     return null;
   };
 
-  const isSunk = () => {
-    return _timesHit === _length;
-  }
+  const isSunk = () => _timesHit === _length;
 
-  const getLength = () => {
-    return _length;
-  }
+  const getLength = () => _length;
 
-  const getTimesHit = () => {
-    return _timesHit;
-  }
+  const getTimesHit = () => _timesHit;
 
-  return { hit, isSunk, getLength, getTimesHit }
+  return {
+    hit, isSunk, getLength, getTimesHit,
+  };
 }

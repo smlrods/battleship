@@ -1,17 +1,17 @@
-import Gameboard from "./gameboard";
+import Gameboard from './gameboard';
 
 export default function Player(name, turn) {
-  let gameboard = Gameboard();
+  const gameboard = Gameboard();
   let _enemy = null;
 
   const setEnemy = (gameboard) => {
-    if(!_enemy) {
+    if (!_enemy) {
       _enemy = gameboard;
     }
-  }
+  };
 
   const attack = function (x, y) {
-    if(this.turn) {
+    if (this.turn) {
       const isPossible = _enemy.gameboard.receiveAttack(x, y);
       if (isPossible) {
         this.turn = false;
@@ -19,7 +19,9 @@ export default function Player(name, turn) {
       }
       return isPossible;
     }
-  }
+  };
 
-  return { gameboard, setEnemy, attack, turn}
+  return {
+    gameboard, setEnemy, attack, turn,
+  };
 }

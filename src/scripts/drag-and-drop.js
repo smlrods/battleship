@@ -1,19 +1,16 @@
-import { renderBoard, showShadowOfShips } from "./interfaceDOM";
+import { renderBoard, showShadowOfShips } from './interfaceDOM';
 import catImage from '../images/cat.gif';
-import { DEFAULT_SHIPS, placeAllShipsRandom } from "./randomplays";
-import Ship from "./ship";
+import { DEFAULT_SHIPS, placeAllShipsRandom } from './randomplays';
+import Ship from './ship';
 
-const shipsBoard = (size=10) => {
-
+const shipsBoard = (size = 10) => {
   const board = document.createElement('div');
   board.classList.add('board');
 
   for (let i = 0; i < size; i++) {
-
     const row = document.createElement('div');
 
     for (let j = 0; j < size; j++) {
-
       const col = document.createElement('div');
       col.classList.add('board-square');
       col.id = `${i}${j}`;
@@ -30,10 +27,10 @@ const shipsBoard = (size=10) => {
   }
 
   return board;
-}
+};
 
 const renderShips = () => {
-  let shipsBoard = document.createElement('div');
+  const shipsBoard = document.createElement('div');
   shipsBoard.classList.add('shipsBoard');
 
   const title = document.createElement('p');
@@ -45,7 +42,7 @@ const renderShips = () => {
   const shipsL3Section = createShips(3, 2);
   shipsL3Section.classList.add('shipsRow');
 
-  const shipsL2Section = createShips(2, 3)
+  const shipsL2Section = createShips(2, 3);
   shipsL2Section.classList.add('shipsRow');
 
   const shipsL1Section = createShips(1, 4);
@@ -58,7 +55,7 @@ const renderShips = () => {
   shipsBoard.appendChild(shipsL1Section);
 
   return shipsBoard;
-}
+};
 
 const createShips = (size, amount) => {
   const ships = document.createElement('div');
@@ -72,7 +69,6 @@ const createShips = (size, amount) => {
       const part = document.createElement('div');
 
       part.addEventListener('click', (event) => {
-
         const ship = event.target.parentElement;
         const square = ship.parentElement;
         const squareX = +square.id[0];
@@ -81,8 +77,7 @@ const createShips = (size, amount) => {
         const shipLength = +ship.id[4];
 
         if (ship.classList.contains('horizontal') && shipLength + squareX - 1 < 10) {
-
-          let shipSquaresVertical = [];
+          const shipSquaresVertical = [];
 
           for (let x = squareX + 1; x < squareX + shipLength; x++) {
             shipSquaresVertical.push(document.getElementById(`${x}${squareY}`));
@@ -91,7 +86,6 @@ const createShips = (size, amount) => {
           const isPossible = shipSquaresVertical.some((square) => square.classList.contains('hasShip'));
 
           if (!isPossible) {
-
             event.target.parentElement.classList.remove('horizontal');
             event.target.parentElement.classList.add('vertical');
 
@@ -102,12 +96,9 @@ const createShips = (size, amount) => {
             for (let x = squareX; x < squareX + shipLength; x++) {
               document.getElementById(`${x}${squareY}`).classList.add('hasShip');
             }
-
           }
-
         } else if (ship.classList.contains('vertical') && shipLength + squareY - 1 < 10) {
-
-          let shipSquaresHorizontal = [];
+          const shipSquaresHorizontal = [];
 
           for (let y = squareY + 1; y < squareY + shipLength; y++) {
             shipSquaresHorizontal.push(document.getElementById(`${squareX}${y}`));
@@ -116,7 +107,6 @@ const createShips = (size, amount) => {
           const isPossible = shipSquaresHorizontal.some((square) => square.classList.contains('hasShip'));
 
           if (!isPossible) {
-
             event.target.parentElement.classList.remove('vertical');
             event.target.parentElement.classList.add('horizontal');
 
@@ -127,9 +117,7 @@ const createShips = (size, amount) => {
             for (let y = squareY; y < squareY + shipLength; y++) {
               document.getElementById(`${squareX}${y}`).classList.add('hasShip');
             }
-
           }
-
         }
       });
       ship.appendChild(part);
@@ -144,7 +132,7 @@ const createShips = (size, amount) => {
   }
 
   return ships;
-}
+};
 
 const dragStart = (event) => {
   event.dataTransfer.setData('text/plain', event.target.id);
@@ -155,29 +143,24 @@ const dragStart = (event) => {
   const squareX = +square.id[0];
   const squareY = +square.id[1];
 
-
   setTimeout(() => {
     ship.classList.add('dragging');
   });
 
   if (square.classList.contains('board-square')) {
-
     square.classList.remove('startShip');
 
     if (ship.classList.contains('horizontal')) {
-
       for (let y = squareY; y < squareY + shipLength; y++) {
         document.getElementById(`${squareX}${y}`).classList.remove('hasShip');
       }
-
     } else if (ship.classList.contains('vertical')) {
-
       for (let x = squareX; x < squareX + shipLength; x++) {
         document.getElementById(`${x}${squareY}`).classList.remove('hasShip');
       }
     }
   }
-}
+};
 
 const dragEnd = (event) => {
   const ship = event.target;
@@ -189,38 +172,33 @@ const dragEnd = (event) => {
   ship.classList.remove('dragging');
 
   if (square.classList.contains('board-square')) {
-
     square.classList.add('startShip');
 
     if (ship.classList.contains('horizontal')) {
-
       for (let y = squareY; y < squareY + shipLength; y++) {
         document.getElementById(`${squareX}${y}`).classList.add('hasShip');
       }
-
     } else if (ship.classList.contains('vertical')) {
-
       for (let x = squareX; x < squareX + shipLength; x++) {
         document.getElementById(`${x}${squareY}`).classList.add('hasShip');
       }
-
     }
   }
-}
+};
 
 const dragEnter = (event) => {
   event.preventDefault();
   event.target.classList.add('drag-over');
-} 
+};
 
 const dragOver = (event) => {
   event.preventDefault();
   event.target.classList.add('drag-over');
-}
+};
 
 const dragLeave = (event) => {
   event.target.classList.remove('drag-over');
-}
+};
 
 const drop = (event) => {
   event.target.classList.remove('drag-over');
@@ -238,11 +216,9 @@ const drop = (event) => {
   const finalShipY = document.getElementById(`${squareX}${squareY + shipLength - 1}`);
   const finalShipX = document.getElementById(`${squareX + shipLength - 1}${squareY}`);
 
-
-  if(finalShipY && 
-    ship.classList.contains('horizontal')) {
-
-    let shipSquaresHorizontal = [square];
+  if (finalShipY
+    && ship.classList.contains('horizontal')) {
+    const shipSquaresHorizontal = [square];
 
     for (let y = squareY; y < squareY + shipLength; y++) {
       shipSquaresHorizontal.push(document.getElementById(`${squareX}${y}`));
@@ -253,11 +229,9 @@ const drop = (event) => {
     if (!isPossible) {
       square.appendChild(ship);
     }
-
-  } else if (finalShipX &&
-            ship.classList.contains('vertical')) {
-
-    let shipSquaresVertical = [square];
+  } else if (finalShipX
+            && ship.classList.contains('vertical')) {
+    const shipSquaresVertical = [square];
 
     for (let x = squareX; x < squareX + shipLength; x++) {
       shipSquaresVertical.push(document.getElementById(`${x}${squareY}`));
@@ -268,17 +242,15 @@ const drop = (event) => {
     if (!isPossible) {
       square.appendChild(ship);
     }
-
   }
-}
+};
 
 const placeShips = (player, computer) => {
-
   const main = document.createElement('div');
   main.id = 'placeships';
 
   const shipsSection = document.createElement('div');
-  const ships = renderShips(); 
+  const ships = renderShips();
 
   shipsSection.appendChild(ships);
 
@@ -341,6 +313,6 @@ const placeShips = (player, computer) => {
   main.appendChild(btn);
 
   return main;
-}
+};
 
 export { placeShips };

@@ -1,4 +1,4 @@
-import { attackRandom, showAttack } from "./randomplays";
+import { attackRandom, showAttack } from './randomplays';
 import crownGif from '../images/crown.gif';
 
 const aiAttack = (enemy, player) => {
@@ -13,17 +13,17 @@ const aiAttack = (enemy, player) => {
     const isSunk = player.gameboard.board[x][y].ship.isSunk();
 
     if (!isSunk) attackedNotSunk.push(square);
-  }); 
+  });
 
   if (attackedNotSunk.length === 1) {
     const x = +attackedNotSunk[0].id[0];
     const y = +attackedNotSunk[0].id[1];
 
     // check the top
-    if (x > 0 && 
-        player.gameboard.board[x - 1][y]
+    if (x > 0
+        && player.gameboard.board[x - 1][y]
         /* player.gameboard.board[x + 1][y].ship.attacked */
-        ) {
+    ) {
       enemy.attack(x - 1, y);
       const square = document.getElementById(`${x - 1}${y}`);
       showAttack(square, player.gameboard.board[x - 1][y]);
@@ -64,7 +64,7 @@ const aiAttack = (enemy, player) => {
         enemy.attack(x, y + 1);
         const square = document.getElementById(`${x}${y + 1}`);
         showAttack(square, player.gameboard.board[x][y + 1]);
-      } else 
+      } else
 
       // Check left
       if (y > 0 && player.gameboard.board[x][y - 1]) {
@@ -74,7 +74,6 @@ const aiAttack = (enemy, player) => {
         const square = document.getElementById(`${x}${y - 1}`);
         showAttack(square, player.gameboard.board[x][y - 1]);
       }
-
     } else { // vertical
       x = +attackedNotSunk[0].id[0];
 
@@ -83,7 +82,7 @@ const aiAttack = (enemy, player) => {
         enemy.attack(x - 1, y);
         const square = document.getElementById(`${x - 1}${y}`);
         showAttack(square, player.gameboard.board[x - 1][y]);
-      } else 
+      } else
 
       // Check BOTTOM
       if (x < 9 && player.gameboard.board[x + 1][y]) {
@@ -94,13 +93,12 @@ const aiAttack = (enemy, player) => {
         showAttack(square, player.gameboard.board[x + 1][y]);
       }
     }
-
   } else {
     attackRandom(enemy, player);
   }
 
   if (player.gameboard.allSunk()) {
-    const infos = document.getElementById('infos'); 
+    const infos = document.getElementById('infos');
     const crownImage = new Image();
     crownImage.src = crownGif;
     document.querySelector('body').insertBefore(crownImage, infos);
@@ -108,6 +106,6 @@ const aiAttack = (enemy, player) => {
     const boards = document.querySelectorAll('.board');
     boards.forEach((el) => el.classList.add('finished'));
   }
-}
+};
 
-export {aiAttack}
+export { aiAttack };
