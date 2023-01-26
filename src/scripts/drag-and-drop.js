@@ -1,4 +1,6 @@
-import { renderBoard } from "./interfaceDOM";
+import { renderBoard, showShadowOfShips } from "./interfaceDOM";
+import catImage from '../images/cat.gif';
+import { DEFAULT_SHIPS, placeAllShipsRandom } from "./randomplays";
 import Ship from "./ship";
 
 const shipsBoard = (size=10) => {
@@ -35,7 +37,7 @@ const renderShips = () => {
   shipsBoard.classList.add('shipsBoard');
 
   const title = document.createElement('p');
-  title.textContent = 'Drag the ships to the grid';
+  title.textContent = 'Drag the ships to the board, and then click to rotate';
 
   const shipsL4Section = createShips(4, 1);
   shipsL4Section.classList.add('shipsRow');
@@ -112,8 +114,6 @@ const createShips = (size, amount) => {
           }
 
           const isPossible = shipSquaresHorizontal.some((square) => square.classList.contains('hasShip'));
-
-          console.log(isPossible);
 
           if (!isPossible) {
 
@@ -288,13 +288,11 @@ const placeShips = (player, computer) => {
   boardSection.appendChild(board);
 
   const btn = document.createElement('button');
-  btn.textContent = 'Get Positions';
+  btn.textContent = 'START';
 
   btn.addEventListener('click', () => {
     const ships = document.querySelectorAll('.startShip');
     if (ships.length == 10) {
-      console.log('getting...');
-      
       ships.forEach((square) => {
         const ship = square.firstChild;
         const shipLength = +ship.id[4];
@@ -308,9 +306,33 @@ const placeShips = (player, computer) => {
         }
       });
 
+      placeAllShipsRandom(DEFAULT_SHIPS, computer.gameboard);
+
       main.remove();
-      document.querySelector('body').appendChild(renderBoard(computer, player));
-      document.querySelector('body').appendChild(renderBoard(player, computer));
+      const body = document.querySelector('body');
+      const content = document.createElement('div');
+      const infos = document.createElement('div');
+      const playerTitle = document.createElement('p');
+      const computerTitle = document.createElement('p');
+
+      playerTitle.textContent = 'Player';
+      computerTitle.textContent = 'Computer';
+
+      content.id = 'content';
+      infos.id = 'infos';
+
+      const playerIcon = new Image();
+      playerIcon.src = catImage;
+
+      infos.appendChild(playerTitle);
+      infos.appendChild(playerIcon);
+      infos.appendChild(computerTitle);
+
+      body.appendChild(infos);
+      content.appendChild(renderBoard(computer, player, true));
+      content.appendChild(renderBoard(player, computer));
+      body.appendChild(content);
+      showShadowOfShips(document.querySelectorAll('.board')[0], player);
     }
   });
 
